@@ -6,7 +6,7 @@ This is a backend server for competative 1v1 matches. It stores [ELO](https://en
 
 ## Setup
 
-This project uses Go and PostgresSQL. So you need a PostgresSQL database running, and you need Go of version 1.18+. After that setup, create a `.env` file in a seperate folder, and install this project `github.com/ShadiestGoat/rankingBackend`
+This project uses Go and PostgresSQL. So you need a PostgresSQL database running, and you need Go of version 1.18+. After that setup, create a `.env` file in a seperate folder, and install this project `go install github.com/ShadiestGoat/rankingBackend`
 
 ## Configuration
 
