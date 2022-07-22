@@ -50,6 +50,11 @@ func matchRouter() http.Handler {
 
 		player1, err1 := FetchPlayer(body.Player1, false)
 		player2, err2 := FetchPlayer(body.Player2, false)
+		initFavor := 1
+
+		if player2.ELO > player1.ELO {
+			initFavor = 2
+		}
 
 		if err1 != nil || err2 != nil {
 			WriteErr(w, 400, "PlayerNotFound")
@@ -61,6 +66,7 @@ func matchRouter() http.Handler {
 			P2:  player2,
 			P1P: 0,
 			P2P: 0,
+			InitialFavor: initFavor,
 		}
 
 		matchJSON, _ := json.Marshal(currentMatch)
@@ -83,6 +89,34 @@ func matchRouter() http.Handler {
 			WriteErr(w, 400, "NoMatchGoingOn")
 			return
 		}
+
+		var winner *Player
+		var looser *Player
+		var winnerID int
+
+		var stake int
+
+		if currentMatch.P1P > currentMatch.P2P {
+			winner = &currentMatch.P1
+			looser = &currentMatch.P2
+			winnerID = 1
+		} else {
+			winner = &currentMatch.P2
+			looser = &currentMatch.P1
+			winnerID = 2
+		}
+
+		if winnerID == currentMatch.InitialFavor {
+			stake = int(math.Round(float64(ELO_K)*1.75))
+		} else {
+			stake = int(math.Round(float64(ELO_K)*0.25))
+		}
+
+		winner.ELO += stake
+		looser.ELO -= stake
+
+		winner.UpdateSQL()
+		looser.UpdateSQL()
 
 		currentMatch = nil
 		Respond(w, 200, `{"status":"success"}`)
@@ -183,7 +217,5 @@ func givePoint(player string) func(w http.ResponseWriter, r *http.Request) {
 			Event: "newPoint",
 			Data:  jsonEnc,
 		}
-
-		return
 	}
 }

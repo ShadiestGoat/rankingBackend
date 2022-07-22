@@ -23,6 +23,7 @@ type Match struct {
 	P2 Player `json:"player2"`
 	P1P int `json:"player1Points"`
 	P2P int `json:"player2Points"`
+	InitialFavor int `json:"initialPlayerFavor"`
 }
 
 type NewMatchRequest struct {
