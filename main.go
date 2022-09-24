@@ -50,8 +50,7 @@ func main() {
 			id := ""
 
 			playersRet.Scan(&elo, &id)
-			DB.Exec(fmt.Sprintf(`INSERT INTO history (elo, id, date)
-			VALUES (%v, %v, %v)`, elo, id, now))
+			DB.Exec(fmt.Sprintf(`INSERT INTO history (elo, id, date) VALUES (%v, '%v', '%v')`, elo, id, now))
 		}
 	})
 

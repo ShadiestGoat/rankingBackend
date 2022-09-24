@@ -25,6 +25,7 @@ var (
 	BACKUP_DAYS = ""
 	ELO_K = 0.0
 	PORT = ""
+	GIVE_ON_DRAW = false
 )
 
 func InitConfig() {
@@ -87,4 +88,6 @@ func InitConfig() {
 	eloK, err := strconv.ParseFloat(ELO_STR, 64)
 	PanicIfErr(err)
 	ELO_K = eloK
+
+	GIVE_ON_DRAW = os.Getenv("DRAW_MODE") == "GIVE"
 }
