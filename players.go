@@ -14,7 +14,7 @@ func playerRouter() http.Handler {
 	r := chi.NewRouter()
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		sql, _ := DB.Query(`SELECT id, name, elo FROM players`)
+		sql, _ := DB.Query(`SELECT id, name, elo FROM players ORDER BY elo DESC`)
 		players := []Player{}
 		for sql.Next() {
 			id, name, elo := "", "", 0
